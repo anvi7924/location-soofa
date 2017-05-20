@@ -3,6 +3,7 @@ import numpy as np
 from datetime import datetime
 import time
 from functools import reduce
+import sys
 
 import os
 from os.path import join, dirname
@@ -24,21 +25,21 @@ while True:
 
 
 ######################################################################## Yelp API Set Up ################################################################
-import yelp
-from yelp.client import Client
-from yelp.oauth1_authenticator import Oauth1Authenticator
-yelp_ConsumerKey = ' '
-yelp_ConsumerSecret = ' '
-yelp_Token = ' '
-yelp_TokenSecret = ' '
-yelp_ConsumerKey = os.environ.get('yelp_ConsumerKey') 
-yelp_ConsumerSecret = os.environ.get('yelp_ConsumerSecret') 
-yelp_Token = os.environ.get('yelp_Token') 
-yelp_TokenSecret = os.environ.get('yelp_TokenSecret') 
+# import yelp
+# from yelp.client import Client
+# from yelp.oauth1_authenticator import Oauth1Authenticator
+# yelp_ConsumerKey = ' '
+# yelp_ConsumerSecret = ' '
+# yelp_Token = ' '
+# yelp_TokenSecret = ' '
+# yelp_ConsumerKey = os.environ.get('yelp_ConsumerKey') 
+# yelp_ConsumerSecret = os.environ.get('yelp_ConsumerSecret') 
+# yelp_Token = os.environ.get('yelp_Token') 
+# yelp_TokenSecret = os.environ.get('yelp_TokenSecret') 
 
 
-auth = Oauth1Authenticator(consumer_key = yelp_ConsumerKey, consumer_secret = yelp_ConsumerSecret, token = yelp_Token, token_secret= yelp_TokenSecret)
-client = Client(auth)
+# auth = Oauth1Authenticator(consumer_key = yelp_ConsumerKey, consumer_secret = yelp_ConsumerSecret, token = yelp_Token, token_secret= yelp_TokenSecret)
+# client = Client(auth)
 
 
 
@@ -46,9 +47,9 @@ client = Client(auth)
 
 import googlemaps
 
-google_API_KEY = ' '
+#google_API_KEY = ' '
 
-google_API_KEY = os.environ.get('google_API_KEY') 
+google_API_KEY = os.environ.get('google_API_KEY')
 
 gmaps = googlemaps.Client(key = google_API_KEY)	
 
@@ -147,19 +148,21 @@ def getGoogleData(xvals, yvals, num_xsamples, num_ysamples):
 	for tag_group in All_tags:
    		scores[tag_group] = np.array([[0.0 for k in range(num_ysamples)] for k in range(num_xsamples)])
 	
-
+   		print('1')
 	for tag_group in All_tags:
 		tag_list = All_tags[tag_group]
-
+		print('2')
 		for i in range(num_xsamples):
 			for j in range(num_ysamples):
+				print('3')
 				coord = {'lat': yvals[j], 'lng': xvals[i]}
 
 				for tag in tag_list:
+					print('4')
 					curr_result = gmaps.places_nearby(location = coord, radius = 500, type = tag)
+					print('5')
 					places = curr_result['results']
 					scores[tag_group][i][j] += len(places)
-
 
 					if 'next_page_token' in curr_result:
 						token = curr_result['next_page_token']
@@ -174,7 +177,7 @@ def getGoogleData(xvals, yvals, num_xsamples, num_ysamples):
 							curr_result = gmaps.places_nearby(location = coord, page_token = token)
 							places = curr_result['results']
 							scores[tag_group][i][j] += len(places)
-
+				
 	for tag_group in All_tags:
 		if (np.amax(scores[tag_group]) > 0):
 			scores[tag_group]= scores[tag_group]*10/np.amax(scores[tag_group])
@@ -195,13 +198,15 @@ def getWalkscoreData(xvals, yvals, num_xsamples, num_ysamples):
 			lon = xvals[i]
 			try:
 				scores[i][j] = walkscore.makeRequest(address, lat, lon)['walkscore']
+
 			except:
 				scores[i][j] = 0.0
 	All_tags = {'walkscoreData': []}
 
-	scores = scores*10/np.amax(scores)
+	#scores = scores*10/np.amax(scores)
 	walkscores = {'walkscoreData': scores}
-
+	print('walkscore', scores)
+	print('tag', All_tags)
 	return((walkscores, All_tags))
 
 
@@ -221,7 +226,7 @@ def javascriptwriter(scores, xvals, yvals, num_xsamples, num_ysamples, All_tags)
         output = output[:-1]
         output += "]}; "
         output += "\n"
-
+    print('output', output)
     return (output)
 
 
@@ -244,63 +249,63 @@ yvals = np.linspace(southeast_coord['lat'], northeast_coord['lat'], num_ysamples
 
 
 ############ Get the heatmaps ############
-print('Starting Yelp Calculations')
-try:
-    yelpscores, yelptags  = getYelpData(xvals, yvals, num_xsamples, num_ysamples)
-    outputyelp = javascriptwriter(yelpscores, xvals, yvals, num_xsamples, num_ysamples, yelptags)
-    f = open('SoofaData' + city.split(",")[0] + 'yelpdata' + '.js', "w")  # Save data as you go along
-    f.write(outputyelp + '\n')
-    f.close()
-    print('Done with Yelp!')
-except:
-    outputyelp = ""
-    print('Sorry, yelp did not complete. \n')
+# print('Starting Yelp Calculations')
+# try:
+#     yelpscores, yelptags  = getYelpData(xvals, yvals, num_xsamples, num_ysamples)
+#     outputyelp = javascriptwriter(yelpscores, xvals, yvals, num_xsamples, num_ysamples, yelptags)
+#     f = open('SoofaData' + city.split(",")[0] + 'yelpdata' + '.js', "w")  # Save data as you go along
+#     f.write(outputyelp + '\n')
+#     f.close()
+#     print('Done with Yelp!')
+# except:
+#     outputyelp = ""
+#     print('Sorry, yelp did not complete. \n')
 
-print('Starting Walk Score Calculations')
+# print('Starting Walk Score Calculations')
 
-try:
-    walkscores, walktags = getWalkscoreData(xvals, yvals, num_xsamples, num_ysamples)
-    outputwalkscore = javascriptwriter(walkscores, xvals, yvals, num_xsamples, num_ysamples, walktags)
-    f = open('SoofaData' + city.split(",")[0] + 'walkscoredata' + '.js', "w") # Save data as you go along
-    f.write(outputwalkscore + '\n')
-    f.close()
-    print('Done with Walkscore!')
-except:
-    outputwalkscore = ""
-    print('Sorry, walkscore did not complete. \n')
+# try:
+#     walkscores, walktags = getWalkscoreData(xvals, yvals, num_xsamples, num_ysamples)
+#     outputwalkscore = javascriptwriter(walkscores, xvals, yvals, num_xsamples, num_ysamples, walktags)
+#     f = open('SoofaData' + city.split(",")[0] + 'walkscoredata' + '.js', "w") # Save data as you go along
+#     f.write(outputwalkscore + '\n')
+#     f.close()
+#     print('Done with Walkscore!')
+# except:
+#     outputwalkscore = ""
+#     print('Sorry, walkscore did not complete. \n')
 
 
-print('Starting Google Calculations (This might take a long time.)')
-try:
-    googlescores, googletags = getGoogleData(xvals, yvals, num_xsamples, num_ysamples)
-    outputgoogle = javascriptwriter(googlescores, xvals, yvals, num_xsamples, num_ysamples, googletags)
-    f = open('SoofaData' + city.split(",")[0] + 'googledata' + '.js', "w") # Save data as you go along
-    f.write(outputgoogle + '\n')
-    f.close()
-    print('Done with google!')
-except:
-    outputgoogle = ""
-    print('Sorry, google did not complete.\n')
+# print('Starting Google Calculations (This might take a long time.)')
+# try:
+#     googlescores, googletags = getGoogleData(xvals, yvals, num_xsamples, num_ysamples)
+#     outputgoogle = javascriptwriter(googlescores, xvals, yvals, num_xsamples, num_ysamples, googletags)
+#     f = open('SoofaData' + city.split(",")[0] + 'googledata' + '.js', "w") # Save data as you go along
+#     f.write(outputgoogle + '\n')
+#     f.close()
+#     print('Done with google!')
+# except:
+#     outputgoogle = ""
+#     print('Sorry, google did not complete.\n')
 
-try:
+# try:
 
-	print('Calculating Averge Data')
+# 	print('Calculating Averge Data')
 
-	AllScores = [yelpscores, walkscores, googlescores]
-	AllResults = []
+# 	AllScores = [yelpscores, walkscores, googlescores]
+# 	AllResults = []
 
-	for score in AllScores:
-		AllResults.extend(score.values())
+# 	for score in AllScores:
+# 		AllResults.extend(score.values())
 
-	AvgResult = reduce((lambda x, y: np.add(x,y)), AllResults)
-	AvgScore = {'averageData': AvgResult/len(AllResults)}
-	AvgTags = {'averageData' : []}
-	averageData = javascriptwriter(AvgScore, xvals, yvals, num_xsamples, num_ysamples, AvgTags)
+# 	AvgResult = reduce((lambda x, y: np.add(x,y)), AllResults)
+# 	AvgScore = {'averageData': AvgResult/len(AllResults)}
+# 	AvgTags = {'averageData' : []}
+# 	averageData = javascriptwriter(AvgScore, xvals, yvals, num_xsamples, num_ysamples, AvgTags)
 
-except:
+# except:
 
-	print('Sorry, average data could not be calculated')
-	averageData = ""
+# 	print('Sorry, average data could not be calculated')
+# 	averageData = ""
 
 
 ############ Save the heatmap data ############
@@ -308,13 +313,27 @@ except:
 print('Writing Data into File')
 try:  # If DataFiles is a valid subfolder
 	f = open('DataFiles/SoofaData' + city.split(",")[0] + '.js', "w")
-	f.write(outputyelp + '\n')
-	f.write(outputwalkscore + '\n')
-	f.write(averageData + '\n')
-	f.write(outputgoogle + '\n')
-	f.write('var lat = ' + str(center_coord['lat']) + '\n')
-	f.write('var lng = ' + str(center_coord['lng']) + '\n')
-	f.write('var AllScores = {"googlefood": googlefoodData, "googlecommunity": googlecommunityData, "googlebigshops": googlebigshopsData, "googlesmallshops": googlesmallshopsData, "googletourist": googletouristData, "googletransit": googletransitData, "yelpfood": yelpfoodData, "yelpshopping": yelpshoppingData, "yelpcommunity": yelpcommunityData, "walkscore": walkscoreData, "average": averageData};' + '\n')
+	#f.write(outputyelp + '\n')
+	#f.write(outputwalkscore + '\n')
+	#f.write(averageData + '\n')
+	#f.write(outputgoogle + '\n')
+	f.write('var lat = ' + str(center_coord['lat']) + ';\n')
+	f.write('var lng = ' + str(center_coord['lng']) + ';\n')
+	f.write('var num_x = ' + str(num_xsamples) + ';\n')
+	f.write('var num_y = ' + str(num_ysamples) + ';\n')
+	f.write('var xval = [ ' + str(xvals[0]))
+	iterxvals = iter(xvals)
+	next(iterxvals)
+	for x in iterxvals:
+		f.write(', ' + str(x))
+	f.write(' ];\n')
+	f.write('var yvals = [ ' + str(yvals[0]))
+	iteryvals = iter(yvals)
+	next(iteryvals)
+	for y in iteryvals:
+	 	f.write(', ' + str(y))
+	f.write(' ];\n')
+	#f.write('var AllScores = {"googlefood": googlefoodData, "googlecommunity": googlecommunityData, "googlebigshops": googlebigshopsData, "googlesmallshops": googlesmallshopsData, "googletourist": googletouristData, "googletransit": googletransitData, "yelpfood": yelpfoodData, "yelpshopping": yelpshoppingData, "yelpcommunity": yelpcommunityData, "walkscore": walkscoreData, "average": averageData};' + '\n')
 	f.write('var northeastcoord = [' + str(northeast_coord['lat']) + ',' + str(northeast_coord['lng']) + ']; \n')
 	f.write('var southwestcoord = [' + str(southwest_coord['lat']) +  ',' + str(southwest_coord['lng']) + ']; \n')
 	f.close()
@@ -322,10 +341,10 @@ try:  # If DataFiles is a valid subfolder
 	print('Minutes taken: %f' %((time.time() - start)/60.0))
 except:
 	f = open('SoofaData' + city.split(",")[0] + '.js', "w")
-	f.write(outputyelp + '\n')
+	#f.write(outputyelp + '\n')
 	f.write(outputwalkscore + '\n')
-	f.write(averageData + '\n')
-	f.write(outputgoogle + '\n')
+	#f.write(averageData + '\n')
+	#f.write(outputgoogle + '\n')
 	f.write('var lat = ' + str(center_coord['lat']) + '\n')
 	f.write('var lng = ' + str(center_coord['lng']) + '\n')
 	f.write('var AllScores = {"googlefood": googlefoodData, "googlecommunity": googlecommunityData, "googlebigshops": googlebigshopsData, "googlesmallshops": googlesmallshopsData, "googletourist": googletouristData, "googletransit": googletransitData, "yelpfood": yelpfoodData, "yelpshopping": yelpshoppingData, "yelpcommunity": yelpcommunityData, "walkscore": walkscoreData, "average": averageData};' + '\n')
