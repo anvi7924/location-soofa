@@ -148,19 +148,17 @@ def getGoogleData(xvals, yvals, num_xsamples, num_ysamples):
 	for tag_group in All_tags:
    		scores[tag_group] = np.array([[0.0 for k in range(num_ysamples)] for k in range(num_xsamples)])
 	
-   		print('1')
+   	
 	for tag_group in All_tags:
 		tag_list = All_tags[tag_group]
-		print('2')
+	
 		for i in range(num_xsamples):
 			for j in range(num_ysamples):
-				print('3')
 				coord = {'lat': yvals[j], 'lng': xvals[i]}
 
 				for tag in tag_list:
-					print('4')
 					curr_result = gmaps.places_nearby(location = coord, radius = 500, type = tag)
-					print('5')
+	
 					places = curr_result['results']
 					scores[tag_group][i][j] += len(places)
 
@@ -226,7 +224,6 @@ def javascriptwriter(scores, xvals, yvals, num_xsamples, num_ysamples, All_tags)
         output = output[:-1]
         output += "]}; "
         output += "\n"
-    print('output', output)
     return (output)
 
 
@@ -317,11 +314,12 @@ try:  # If DataFiles is a valid subfolder
 	#f.write(outputwalkscore + '\n')
 	#f.write(averageData + '\n')
 	#f.write(outputgoogle + '\n')
+	f.write("var city = \"" + city + "\";\n")
 	f.write('var lat = ' + str(center_coord['lat']) + ';\n')
 	f.write('var lng = ' + str(center_coord['lng']) + ';\n')
 	f.write('var num_x = ' + str(num_xsamples) + ';\n')
 	f.write('var num_y = ' + str(num_ysamples) + ';\n')
-	f.write('var xval = [ ' + str(xvals[0]))
+	f.write('var xvals = [ ' + str(xvals[0]))
 	iterxvals = iter(xvals)
 	next(iterxvals)
 	for x in iterxvals:
@@ -333,7 +331,7 @@ try:  # If DataFiles is a valid subfolder
 	for y in iteryvals:
 	 	f.write(', ' + str(y))
 	f.write(' ];\n')
-	#f.write('var AllScores = {"googlefood": googlefoodData, "googlecommunity": googlecommunityData, "googlebigshops": googlebigshopsData, "googlesmallshops": googlesmallshopsData, "googletourist": googletouristData, "googletransit": googletransitData, "yelpfood": yelpfoodData, "yelpshopping": yelpshoppingData, "yelpcommunity": yelpcommunityData, "walkscore": walkscoreData, "average": averageData};' + '\n')
+	#f.write('var AllScores = {"googlefood": googlefoodData, "googlecommunity": googlecommunityData, "googlebigshops": googlebigshopsData, "googlesmallshops": googlesmallshopsData, "googletourist": googletourist "walkscore": walkscoreData, "average": averageData};' + '\n')
 	f.write('var northeastcoord = [' + str(northeast_coord['lat']) + ',' + str(northeast_coord['lng']) + ']; \n')
 	f.write('var southwestcoord = [' + str(southwest_coord['lat']) +  ',' + str(southwest_coord['lng']) + ']; \n')
 	f.close()

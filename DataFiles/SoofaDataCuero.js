@@ -1,3 +1,4 @@
+var city = "Cuero, TX";
 var lat = 29.0938652;
 var lng = -97.28915680000001;
 var num_x = 10;
