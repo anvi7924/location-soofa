@@ -1,0 +1,44 @@
+14:25:28.917 INFO - Launching a standalone Selenium Server
+14:25:28.947 INFO - Java: Oracle Corporation 25.91-b14
+14:25:28.947 INFO - OS: Mac OS X 10.11.6 x86_64
+14:25:28.959 INFO - v2.53.1, with Core v2.53.1. Built from revision a36b8b1
+14:25:29.014 INFO - Driver provider org.openqa.selenium.ie.InternetExplorerDriver registration is skipped:
+registration capabilities Capabilities [{ensureCleanSession=true, browserName=internet explorer, version=, platform=WINDOWS}] does not match the current platform MAC
+14:25:29.014 INFO - Driver provider org.openqa.selenium.edge.EdgeDriver registration is skipped:
+registration capabilities Capabilities [{browserName=MicrosoftEdge, version=, platform=WINDOWS}] does not match the current platform MAC
+14:25:29.015 INFO - Driver class not found: com.opera.core.systems.OperaDriver
+14:25:29.015 INFO - Driver provider com.opera.core.systems.OperaDriver is not registered
+14:25:29.017 INFO - Driver class not found: org.openqa.selenium.htmlunit.HtmlUnitDriver
+14:25:29.017 INFO - Driver provider org.openqa.selenium.htmlunit.HtmlUnitDriver is not registered
+14:25:29.087 INFO - RemoteWebDriver instances should connect to: http://127.0.0.1:4444/wd/hub
+14:25:29.087 INFO - Selenium Server is up and running
+14:25:29.296 INFO - Executing: [new session: Capabilities [{acceptSslCerts=true, marionette=true, name=Test, browserName=chrome, javascriptEnabled=true, platform=ANY}]])
+14:25:29.304 INFO - Creating a new session for Capabilities [{acceptSslCerts=true, marionette=true, name=Test, browserName=chrome, javascriptEnabled=true, platform=ANY}]
+Starting ChromeDriver 2.29.461585 (0be2cd95f834e9ee7c46bcc7cf405b483f5ae83b) on port 32984
+Only local connections are allowed.
+14:25:30.445 INFO - Done: [new session: Capabilities [{acceptSslCerts=true, marionette=true, name=Test, browserName=chrome, javascriptEnabled=true, platform=ANY}]]
+14:25:30.463 INFO - Executing: [get: file:///Users/annavillani/Soofa/location-tool/HeatMap.html])
+14:25:31.483 INFO - Done: [get: file:///Users/annavillani/Soofa/location-tool/HeatMap.html]
+14:25:32.496 INFO - Executing: [find elements: By.cssSelector: body])
+14:25:32.527 INFO - Done: [find elements: By.cssSelector: body]
+14:25:32.532 INFO - Executing: [is displayed: 0 [[ChromeDriver: chrome on MAC (fb070464439d41abe904ebd0912e97e7)] -> css selector: body]])
+14:25:32.551 INFO - Done: [is displayed: 0 [[ChromeDriver: chrome on MAC (fb070464439d41abe904ebd0912e97e7)] -> css selector: body]]
+14:25:32.558 INFO - Executing: [find elements: By.cssSelector: #wcdata])
+14:25:32.578 INFO - Done: [find elements: By.cssSelector: #wcdata]
+14:25:32.582 INFO - Executing: [delete session: 5d3f4c1c-3cf3-418b-b48f-c540a31926e6])
+14:25:32.655 INFO - Done: [delete session: 5d3f4c1c-3cf3-418b-b48f-c540a31926e6]
+14:25:32.673 INFO - Executing: [new session: Capabilities [{acceptSslCerts=true, marionette=true, name=Test, browserName=chrome, javascriptEnabled=true, platform=ANY}]])
+14:25:32.674 INFO - Creating a new session for Capabilities [{acceptSslCerts=true, marionette=true, name=Test, browserName=chrome, javascriptEnabled=true, platform=ANY}]
+Starting ChromeDriver 2.29.461585 (0be2cd95f834e9ee7c46bcc7cf405b483f5ae83b) on port 39320
+Only local connections are allowed.
+14:25:33.506 INFO - Done: [new session: Capabilities [{acceptSslCerts=true, marionette=true, name=Test, browserName=chrome, javascriptEnabled=true, platform=ANY}]]
+14:25:33.510 INFO - Executing: [get: file:///Users/annavillani/Soofa/location-tool/HeatMapAPI.html])
+14:25:35.263 INFO - Done: [get: file:///Users/annavillani/Soofa/location-tool/HeatMapAPI.html]
+14:25:36.275 INFO - Executing: [find elements: By.cssSelector: body])
+14:25:36.297 INFO - Done: [find elements: By.cssSelector: body]
+14:25:36.300 INFO - Executing: [is displayed: 0 [[ChromeDriver: chrome on MAC (ba380d724e0032e0b734c1737bdafdff)] -> css selector: body]])
+14:25:36.319 INFO - Done: [is displayed: 0 [[ChromeDriver: chrome on MAC (ba380d724e0032e0b734c1737bdafdff)] -> css selector: body]]
+14:25:36.326 INFO - Executing: [find elements: By.cssSelector: #wcdata])
+14:25:36.347 INFO - Done: [find elements: By.cssSelector: #wcdata]
+14:25:36.354 INFO - Executing: [delete session: dab71896-5f7b-4427-956c-75a15bac3854])
+14:25:36.428 INFO - Done: [delete session: dab71896-5f7b-4427-956c-75a15bac3854]

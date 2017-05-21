@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites errors="0"
+            failures="1"
+            tests="2">
+
+  <testsuite name="test"
+    errors="0" failures="1" hostname="" id="" package="test" skipped="0"
+    tests="2" time="7.287" timestamp="Sun, 21 May 2017 20:25:29 GMT">
+  
+    <testcase name="step one" classname="test" time="3.520" assertions="2">
+
+    
+
+    
+    </testcase>
+  
+    <testcase name="step two" classname="test" time="3.767" assertions="2">
+
+      <failure message="Testing if element &lt;#wcdata&gt; is present.">    at Object.module.exports.step two (/Users/annavillani/Soofa/location-tool/test.js:22:15)
+    at _combinedTickCallback (internal/process/next_tick.js:67:7)</failure>
+
+    
+    </testcase>
+  
+  
+  </testsuite>
+</testsuites>
